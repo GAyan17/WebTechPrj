@@ -62,7 +62,7 @@ export const Mutation = {
         // hash password and create an auth token
         password = await hash(password, 12);
 
-        const newUser = new User({ email, username, password, createdAt: new Date().toISOString });
+        const newUser = new User({ email, username, password, createdAt: new Date().toISOString() });
 
         const res = await newUser.save();
 

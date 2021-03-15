@@ -1,14 +1,16 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer, PubSub } from 'apollo-server';
 import { connect } from 'mongoose';
 
 import typeDefs from './graphql/typeDefs'
 import resolvers from ('./graphql/resolvers');
 import { MONGODB } from './config.js';
 
+const pubsub = new PubSub();
+
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => ({ req })
+    context: ({ req }) => ({ req, pubsub })
 });
 
 connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
