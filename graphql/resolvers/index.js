@@ -1,26 +1,26 @@
-import postResolvers from './posts';
-import userResolvers from './users';
-import commentsResolvers from './comments';
+const postResolvers = require("./posts");
+const userResolvers = require("./users");
+const commentsResolvers = require("./comments");
 
-export default {
-    Post: {
-        likeCount: (parent) => {
-            // console.log(parent);
-            return parent.likes.length;
-        },
-        commentCount: (parent) => {
-            return parent.comments.length;
-        }
+module.exports = {
+  Post: {
+    likeCount: (parent) => {
+      // console.log(parent);
+      return parent.likes.length;
     },
-    Query: {
-        ...postResolvers.Query
+    commentCount: (parent) => {
+      return parent.comments.length;
     },
-    Mutation: {
-        ...userResolvers.Mutation,
-        ...postResolvers.Mutation,
-        ...commentsResolvers.Mutation,
-    },
-    Subscription: {
-        ...postResolvers.Subscription
-    }
-}
+  },
+  Query: {
+    ...postResolvers.Query,
+  },
+  Mutation: {
+    ...userResolvers.Mutation,
+    ...postResolvers.Mutation,
+    ...commentsResolvers.Mutation,
+  },
+  Subscription: {
+    ...postResolvers.Subscription,
+  },
+};
