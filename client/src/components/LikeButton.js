@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { Button } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
 
 function LikeButton({ user, post: { id, likeCount, likes } }) {
   const [liked, setLiked] = useState(false);
@@ -20,20 +20,26 @@ function LikeButton({ user, post: { id, likeCount, likes } }) {
   });
 
   return (
-    <Button
-      labelPosition="right"
-      onClick={user ? likePost : null}
-      basic={user ? (liked ? true : false) : true}
-      as={user ? null : Link}
-      to={user ? null : "/login"}
-      color="green"
-      icon="heart"
-      label={{
-        basic: true,
-        color: "green",
-        pointing: "left",
-        content: likeCount,
-      }}
+    <Popup
+      content={liked ? "Dislike" : "Like"}
+      inverted
+      trigger={
+        <Button
+          labelPosition="right"
+          onClick={user ? likePost : null}
+          basic={user ? (liked ? true : false) : true}
+          as={user ? null : Link}
+          to={user ? null : "/login"}
+          color="green"
+          icon="heart"
+          label={{
+            basic: true,
+            color: "green",
+            pointing: "left",
+            content: likeCount,
+          }}
+        />
+      }
     />
   );
 }
@@ -50,4 +56,5 @@ const LIKE_POST_MUTATION = gql`
     }
   }
 `;
+
 export default LikeButton;
