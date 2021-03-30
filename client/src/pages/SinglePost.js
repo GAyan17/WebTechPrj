@@ -17,9 +17,7 @@ function SinglePost(props) {
 
   const [comment, setComment] = useState("");
 
-  const {
-    data: { getPost },
-  } = useQuery(FETCH_POST_QUERY, {
+  const { data } = useQuery(FETCH_POST_QUERY, {
     variables: {
       postId,
     },
@@ -41,29 +39,16 @@ function SinglePost(props) {
   }
 
   let postMarkup;
-  if (!getPost) {
+  if (!data?.getPost) {
     postMarkup = <p>Loading Post...</p>;
   } else {
-    const {
-      id,
-      body,
-      createdAt,
-      username,
-      comments,
-      likes,
-      likeCount,
-      commentCount,
-    } = getPost;
+    const { id, body, createdAt, username, comments, likes, likeCount, commentCount } = data?.getPost;
 
     postMarkup = (
       <Grid>
         <Grid.Row>
           <Grid.Column width={2}>
-            <Image
-              src="https://react.semantic-ui.com/images/avatar/large/molly.png"
-              size="smale"
-              float="right"
-            />
+            <Image src="https://react.semantic-ui.com/images/avatar/large/molly.png" size="smale" float="right" />
           </Grid.Column>
           <Grid.Column width={10}>
             <Card fluid>
@@ -94,9 +79,7 @@ function SinglePost(props) {
                     />
                   }
                 />
-                {user && user.username === username && (
-                  <DeleteButton postId={id} callback={deletePostCallback} />
-                )}
+                {user && user.username === username && <DeleteButton postId={id} callback={deletePostCallback} />}
               </Card.Content>
             </Card>
             {user && (
@@ -105,20 +88,8 @@ function SinglePost(props) {
                   <p>Post a comment...</p>
                   <Form>
                     <div className="ui action input fluid">
-                      <input
-                        type="text"
-                        placeholder="Comment.."
-                        name="comment"
-                        value={comment}
-                        onChange={(event) => setComment(event.target.value)}
-                        ref={commentInputRef}
-                      />
-                      <button
-                        type="submit"
-                        className="ui button blue"
-                        disabled={comment.trim() === ""}
-                        onClick={createComment}
-                      >
+                      <input type="text" placeholder="Comment.." name="comment" value={comment} onChange={(event) => setComment(event.target.value)} ref={commentInputRef} />
+                      <button type="submit" className="ui button blue" disabled={comment.trim() === ""} onClick={createComment}>
                         Create Comment
                       </button>
                     </div>
@@ -129,9 +100,7 @@ function SinglePost(props) {
             {comments.map((comment) => (
               <Card fluid key={comment.id}>
                 <Card.Content>
-                  {user && user.username === comment.username && (
-                    <DeleteButton postId={id} commentId={comment.id} />
-                  )}
+                  {user && user.username === comment.username && <DeleteButton postId={id} commentId={comment.id} />}
                   <Card.Header>{comment.username}</Card.Header>
                   <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
                   <Card.Description>{comment.body}</Card.Description>
